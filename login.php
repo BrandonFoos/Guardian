@@ -10,12 +10,23 @@ if (isset($_POST['email'])) {
     $sql = "SELECT * FROM Login WHERE (`username` = '" . $email . "') AND (`cleartextpassword` = '" . $password . "')";
     //die($sql);
     $result = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_assoc($result);
     if(!$result) {
         die($sql . mysqli_error($conn));
-    } else {
-        $row = mysqli_fetch_assoc($result);
+    } else if (isset($row['userid'])) {
+	    $sql = "SUCCESS: " . $sql;
+	    $stmt = $conn->prepare("INSERT INTO usrQuery VALUES (null, ? );");
+    $stmt->bind_param('s',$sql);
+	    $stmt->execute();
+	    mail('brandon.foos@usu.edu', 'User Authenticated','A user has logged in');
         $_SESSION['MEMBER_ID'] = $row['userid'];
         echo "<script>window.location = 'index.php';</script>";
+    } else {
+	    $sql = "FAILURE: " . $sql;
+            $stmt = $conn->prepare("INSERT INTO usrQuery VALUES (null, ? );");
+    $stmt->bind_param('s',$sql);
+    $stmt->execute();
+	echo "<script>alert('Bad Username or Password');</script>";
     }
 }
 ?>

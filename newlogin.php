@@ -3,8 +3,8 @@ require("./connect.php");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-if (isset($_POST['email'])) {
+$allow = True;
+if (isset($_POST['email']) && $allow) {
     $email = htmlentities(trim($_POST['email']));
     $password = htmlentities(trim($_POST['password']));
     $md5 = md5($password);
@@ -20,6 +20,8 @@ if (isset($_POST['email'])) {
     } else {
         die("<script>alert('Account created, please login.'); window.location = 'index.php'</script>");
     }
+} else {
+        echo "<script>alert('Account Creation Disabled');</script>";
 }
 function generateRandomString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -29,7 +31,7 @@ function generateRandomString($length = 10) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     return $randomString;
-}
+}  
 ?>
 <!DOCTYPE html>
 <html>

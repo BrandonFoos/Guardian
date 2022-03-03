@@ -2,7 +2,7 @@
 $server = "localhost";
 $username = "admin";
 $password = "Eden2013";
-$database = "login";
+$database = "Guardian";
 
 $conn = mysqli_connect($server,$username,$password) or die("Error in Connection");
 mysqli_select_db($conn, $database ) or die("Could not select database");
