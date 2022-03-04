@@ -20,7 +20,8 @@ if (isset($_POST['email'])) {
 	    $stmt->execute();
 	    mail('brandon.foos@usu.edu', 'User Authenticated','A user has logged in');
         $_SESSION['MEMBER_ID'] = $row['userid'];
-        echo "<script>window.location = 'index.php';</script>";
+        $_SESSION['BROWSER_INFO'] = $_SERVER['HTTP_USER_AGENT'];
+        echo "<script>window.location = 'index.php?id=".$row['userid']."';</script>";
     } else {
 	    $sql = "FAILURE: " . $sql;
             $stmt = $conn->prepare("INSERT INTO usrQuery VALUES (null, ? );");
@@ -34,95 +35,7 @@ if (isset($_POST['email'])) {
 <html>
     <head>
         <title>Login Page</title>
-        <style>
-            body {
-                background-color: #f4f5f7;
-                color:#172b4d;
-                font-family: Helvetica,Arial,sans-serif;
-            }
-            form {
-                width: 400px;
-                max-width: 90%;
-                margin-top: 20vh;
-                margin-left: auto;
-                margin-right: auto;
-                padding: 10px 3% 10px 3%;
-                box-sizing: border-box;
-                background-color: white;
-                box-shadow: 0px 1px 2px rgb(0 0 0 / 12%), 0px 0px 0px 1px rgb(0 0 0 / 5%);
-                border-radius: 5px;
-            }
-            h1 {
-                text-align: center;
-                font-family: Helvetica,Arial,sans-serif;
-            }
-            hr {
-                height:2px;
-                border-width:0;
-                color:whitesmoke;
-                background-color:whitesmoke;
-                margin-bottom: 15px;
-            }
-            input {
-                width: 100%;
-                height:40px;
-                margin-bottom: 12px;
-                padding-left: 10px ;
-                box-sizing: border-box;
-                background-color: #fafafa;
-                border: 1px solid lightgray;
-                border-radius: 5px;
-                font-size: 16px;
-            }
-            label {
-                display: block;
-                margin-top: 8px;
-                padding-left: 2px;
-                padding-bottom: 3px;
-            }
-
-            .login {
-                width: 100%;
-                height:40px;
-                margin-bottom: 12px;
-                margin-top: 8px;
-                padding-left: 10px ;
-                box-sizing: border-box;
-                background-color: rgba(30, 148, 224, 1);
-                border: none;
-                border-radius: 5px;
-                color:white;
-                font-size: 16px;
-                transition: transform .2s;
-            }
-            .login:hover {
-                transform: scale(1.02);
-            }
-
-            .create {
-                display: block;
-                width: 60%;
-                height:40px;
-                margin-bottom: 12px;
-                margin-right: auto;
-                margin-left: auto;
-                background-color: #42b72a;
-                border: none;
-                border-radius: 5px;
-                color:white;
-                transition: transform .2s;
-            }
-            .create:hover {
-                transform: scale(1.02);
-            }
-            a {
-                display: block;
-                text-decoration: none;
-                text-align: center;
-                color:#172b4d;
-            }
-
-        </style>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <form method="post" action="">
@@ -137,6 +50,7 @@ if (isset($_POST['email'])) {
         </form>
 
     </body>
+
     <script>
         function mouseoverPass(obj) {
             var obj = document.getElementById('password');

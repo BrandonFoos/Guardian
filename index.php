@@ -3,7 +3,7 @@ require("session.php");
 require("connect.php");
 confirm_logged_in();
 
-$sql = "SELECT * FROM Login WHERE userid = " . $_SESSION['MEMBER_ID'];
+$sql = "SELECT * FROM Login WHERE userid = " . $_GET['id'];
 $result = mysqli_query($conn,$sql);
 if(!$result) {
     die(mysqli_error($conn));

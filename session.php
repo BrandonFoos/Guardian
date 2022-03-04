@@ -26,7 +26,7 @@ function checkExpiration()
         $expireAfterSeconds = $expireAfter * 60;
 
 
-        if ($timeInactive >= $expireAfterSeconds) {
+        if ($timeInactive >= $expireAfterSeconds || $_SESSION['BROWSER_INFO'] != $_SERVER['HTTP_USER_AGENT']) {
             session_unset();
             session_destroy();
         }
