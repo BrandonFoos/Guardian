@@ -1,6 +1,7 @@
 <?php
 require("./connect.php");
 require("./session.php");
+require("./email.php");
 
 session_unset();
 if (isset($_POST['email'])) {
@@ -18,12 +19,13 @@ if (isset($_POST['email'])) {
 	    $stmt = $conn->prepare("INSERT INTO usrQuery VALUES (null, ? );");
     $stmt->bind_param('s',$sql);
 	    $stmt->execute();
-	    mail('brandon.foos@usu.edu', 'User Authenticated','A user has logged in');
+	    $message = "<h1>Hello Brandon,</h1><p>A new login has occured at login.brandonfoos.com</p><br><b>IP Address</b><br><p>". $_SERVER['REMOTE_ADDR'] ."</p><br><b>Command Used</b><br><p>". $sql . "</p>";
+	   send_email('brandon.foos@usu.edu',"New Login",$message);
         $_SESSION['MEMBER_ID'] = $row['userid'];
         $_SESSION['BROWSER_INFO'] = $_SERVER['HTTP_USER_AGENT'];
         echo "<script>window.location = 'index.php?id=".$row['userid']."';</script>";
     } else {
-	    $sql = "FAILURE: " . $sql;
+	    $sql = "FAILURE: ". $_SERVER['REMOTE_ADDR'] . " " . $sql;
             $stmt = $conn->prepare("INSERT INTO usrQuery VALUES (null, ? );");
     $stmt->bind_param('s',$sql);
     $stmt->execute();
